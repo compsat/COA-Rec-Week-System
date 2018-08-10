@@ -17,6 +17,10 @@ import java.util.Arrays;
 import java.awt.Font;
 import java.io.File;
 import java.awt.GraphicsEnvironment;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class RegSystem extends JFrame {
@@ -43,6 +47,9 @@ public class RegSystem extends JFrame {
 
     HashMap<String, String[]> oldMembers;
     SchoolSorter sorter;
+
+    Timestamp timestamp;
+    SimpleDateFormat sdf;
 
     public RegSystem() {
         setUpOldMemberDictionary();
@@ -381,6 +388,9 @@ public class RegSystem extends JFrame {
         try {
             String isOldMember = oldMember.isSelected() ? "YES" : "NO";
             String scholarStatus = isScholar.isSelected() ? "YES" : "NO";
+            String fileDate = "RecWeek-Attendance_"+ returnDateToday() + ".csv";
+            sdf = new SimpleDateFormat("MM/dd/yyy HH:mm:ss");
+            timestamp = new Timestamp(System.currentTimeMillis());
 
 
             String data =
@@ -396,9 +406,10 @@ public class RegSystem extends JFrame {
                 mobileNumber.getText() + "," +
                 email.getText() + "," +
                 isOldMember + "," +
-                scholarStatus;
+                scholarStatus + "," + "," +
+                sdf.format(timestamp);
 
-                File file = new File("output.csv");
+                File file = new File(fileDate);
                 boolean fileExistedBefore = true;
           			// if file doesnt exists, then create it
           			if (!file.exists()) {
@@ -406,10 +417,10 @@ public class RegSystem extends JFrame {
                       fileExistedBefore = false;
           			}
 
-          			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true); // boolean: append mode
+          			FileWriter fw = new FileWriter(file, true); // boolean: append mode //getAbsoluteFile()
           			BufferedWriter bw = new BufferedWriter(fw);
                 if (!fileExistedBefore) {
-                    bw.append("ID Number,Last Name,First Name,MI,Nickname,Year,Course,School,Birthday,Mobile,Email,Old Member?, Scholar?");
+                    bw.append("ID Number,Last Name,First Name,MI,Nickname,Year,Course,School,Birthday,Mobile,Email,Old Member?, Scholar?, ,Timestamp");
                 }
                 bw.newLine();
           			bw.append(data);
@@ -432,6 +443,16 @@ public class RegSystem extends JFrame {
 
         if (birthDay.getText().replaceAll("\\s+","").length() < 2)
             birthDay.setText("0" + birthDay.getText().replaceAll("\\s+",""));
+    }
+
+    public String returnDateToday()
+    {
+    	Calendar cal = Calendar.getInstance();
+		int day = cal.get(Calendar.DAY_OF_MONTH);
+		int month = cal.get(Calendar.MONTH)+1;
+		int year = cal.get(Calendar.YEAR);
+		String dateToday = Integer.toString(month)+"_"+Integer.toString(day)+"_"+Integer.toString(year);
+		return dateToday;
     }
 
     public static void main (String[] args) {
