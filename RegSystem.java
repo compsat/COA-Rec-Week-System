@@ -417,7 +417,7 @@ public class RegSystem extends JFrame {
                       fileExistedBefore = false;
           			}
 
-          			FileWriter fw = new FileWriter(file, true); // boolean: append mode //getAbsoluteFile()
+          			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true); // boolean: append mode //getAbsoluteFile()
           			BufferedWriter bw = new BufferedWriter(fw);
                 if (!fileExistedBefore) {
                     bw.append("ID Number,Last Name,First Name,MI,Nickname,Year,Course,School,Birthday,Mobile,Email,Old Member?, Scholar?, ,Timestamp");
