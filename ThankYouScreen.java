@@ -2,6 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import java.util.logging.*;
 
 public class ThankYouScreen extends JFrame {
 
@@ -17,13 +18,13 @@ public class ThankYouScreen extends JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RegSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+          Logger.getLogger(RegSystem.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RegSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+          Logger.getLogger(RegSystem.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RegSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RegSystem.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+          Logger.getLogger(RegSystem.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnsupportedLookAndFeelException ex) {
+          Logger.getLogger(RegSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         JButton return_button = new JButton("Go Back");
