@@ -13,7 +13,7 @@ public class Field extends JTextField {
     private String placeholder;
     int limit;
 
-    public Field (String placeholder, int limit) {
+    public Field (String placeholder, int limit, boolean editable) {
         this.placeholder = placeholder;
         this.limit = limit;
         /*
@@ -28,6 +28,7 @@ public class Field extends JTextField {
         setFont(new Font("Arial", Font.PLAIN, 18));
         setForeground(Color.decode("#333333"));
         setDocument(new JTextFieldLimit(limit));
+        setEditable(editable);
     }
 
     public Field (int limit) {

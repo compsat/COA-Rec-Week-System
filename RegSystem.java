@@ -55,7 +55,8 @@ public class RegSystem extends JFrame {
         setUpOldMemberDictionary();
 
         setWindowSize();
-        setContentPane(new JLabel(new ImageIcon("background.png")));
+        //setContentPane(new JLabel(new ImageIcon("background.png")));
+        setContentPane(new JLabel(new ImageIcon("REGSCREEN.png")));
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -76,7 +77,7 @@ public class RegSystem extends JFrame {
 
         fields = new ArrayList<Field>();
         addFields ();
-        addRadioButtons ();
+        //addRadioButtons ();
         addSubmitButton ();
 
         setLocationRelativeTo(null);
@@ -139,32 +140,32 @@ public class RegSystem extends JFrame {
     private void addFields () {
         // Text Fields
         // Construct Components
-        idNumber = new Field (6);
-        nickname = new Field (20);
-        year = new Field (1);
-        lastName = new Field ("Last Name", 20);
-        course = new Field ("BS CS", 10);
-        email = new Field (40);
-        firstName = new Field ("First Name", 20);
-        middleInitial = new Field ("MI", 1);
-        mobileNumber = new Field ("eg. 09171234567", 11);
-        birthMonth = new Field ("MM", 2);
-        birthDay = new Field (" DD", 2);
-        birthYear = new Field ("YYYY", 4);
+        idNumber = new Field ("ID Number", 6, true);
+        // nickname = new Field (20);
+        year = new Field ("Yr", 1, false);
+        lastName = new Field ("Last Name", 20, false);
+        course = new Field ("Course", 10, false);
+        // email = new Field (40);
+        firstName = new Field ("First Name", 20, false);
+        middleInitial = new Field ("MI", 1, false);
+        // mobileNumber = new Field ("eg. 09171234567", 11);
+        // birthMonth = new Field ("MM", 2);
+        // birthDay = new Field (" DD", 2);
+        // birthYear = new Field ("YYYY", 4);
 
         // Add Text Fields to ArrayList
         fields.add (idNumber);
-        fields.add (nickname);
+        // fields.add (nickname);
         fields.add (year);
         fields.add (lastName);
         fields.add (course);
-        fields.add (email);
+        // fields.add (email);
         fields.add (firstName);
         fields.add (middleInitial);
-        fields.add (mobileNumber);
-        fields.add (birthMonth);
-        fields.add (birthDay);
-        fields.add (birthYear);
+        // fields.add (mobileNumber);
+        // fields.add (birthMonth);
+        // fields.add (birthDay);
+        // fields.add (birthYear);
 
         for (Field text_field : fields) {
             add (text_field);
@@ -172,31 +173,31 @@ public class RegSystem extends JFrame {
 
         // Cross-Platform Compatibility
         if (System.getProperty("os.name").contains("Windows")) {
-            idNumber.setBounds (147, 170, 90, 35);
-            nickname.setBounds (147, 260, 155, 35);
-            year.setBounds (374, 260, 40, 35);
-            lastName.setBounds (147, 350, 290, 35);
-            course.setBounds (448, 260, 100, 35);
-            email.setBounds (147, 440, 350, 35);
-            firstName.setBounds (471, 350, 290, 35);
-            middleInitial.setBounds (779, 350, 45, 35);
-            mobileNumber.setBounds (616, 440, 200, 35);
-            birthMonth.setBounds (616, 260, 50, 35);
-            birthDay.setBounds (693, 260, 50, 35);
-            birthYear.setBounds (768, 260, 59, 35);
+            idNumber.setBounds (147, 195, 100, 35);
+            // nickname.setBounds (147, 260, 155, 35);
+            year.setBounds (147, 285, 40, 35);
+            lastName.setBounds (147, 375, 290, 35);
+            course.setBounds (218, 285, 100, 35);
+            // email.setBounds (147, 440, 350, 35);
+            firstName.setBounds (471, 375, 290, 35);
+            middleInitial.setBounds (779, 375, 45, 35);
+            // mobileNumber.setBounds (616, 440, 200, 35);
+            // birthMonth.setBounds (616, 260, 50, 35);
+            // birthDay.setBounds (693, 260, 50, 35);
+            // birthYear.setBounds (768, 260, 59, 35);
         } else {
-            idNumber.setBounds (157, 180, 90, 35);
-            nickname.setBounds (157, 270, 155, 35);
-            year.setBounds (384, 270, 40, 35);
-            lastName.setBounds (157, 360, 290, 35);
-            course.setBounds (458, 270, 100, 35);
-            email.setBounds (157, 450, 350, 35);
-            firstName.setBounds (481, 360, 290, 35);
-            middleInitial.setBounds (789, 360, 45, 35);
-            mobileNumber.setBounds (626, 450, 200, 35);
-            birthMonth.setBounds (626, 270, 50, 35);
-            birthDay.setBounds (703, 270, 50, 35);
-            birthYear.setBounds (778, 270, 59, 35);
+            idNumber.setBounds (157, 205, 100, 35);
+            // nickname.setBounds (157, 270, 155, 35);
+            year.setBounds (384, 295, 40, 35);
+            lastName.setBounds (157, 385, 290, 35);
+            course.setBounds (458, 295, 100, 35);
+            // email.setBounds (157, 450, 350, 35);
+            firstName.setBounds (481, 385, 290, 35);
+            middleInitial.setBounds (789, 385, 45, 35);
+            // mobileNumber.setBounds (626, 450, 200, 35);
+            // birthMonth.setBounds (626, 270, 50, 35);
+            // birthDay.setBounds (703, 270, 50, 35);
+            // birthYear.setBounds (778, 270, 59, 35);
         }
 
         // Mouse pointer to ID Number
@@ -218,22 +219,22 @@ public class RegSystem extends JFrame {
                     lastName.setText(data[0]);
                     firstName.setText(data[1]);
                     middleInitial.setText(data[2].substring(0,1));
-                    nickname.setText(data[3]);
+                    // nickname.setText(data[3]);
                     year.setText(String.valueOf(Integer.parseInt(data[4]) + 1));
                     course.setText(data[5]);
-                    birthMonth.setText(birthday[0]);
-                    birthDay.setText(birthday[1]);
-                    birthYear.setText(birthday[2]);
-                    email.setText (data[7]);
-                    mobileNumber.setText("0" + data[8]);
-                    oldMember.setSelected (true);
-                    notScholar.setSelected (true);
+                    // birthMonth.setText(birthday[0]);
+                    // birthDay.setText(birthday[1]);
+                    // birthYear.setText(birthday[2]);
+                    // email.setText (data[7]);
+                    // mobileNumber.setText("0" + data[8]);
+                    // oldMember.setSelected (true);
+                    // notScholar.setSelected (true);
                 }
             }
         });
     }
 
-    private void addRadioButtons () {
+    /*private void addRadioButtons () {
         // Membership Status
         membershipStatus = new ButtonGroup();
         oldMember = new JRadioButton();
@@ -260,11 +261,6 @@ public class RegSystem extends JFrame {
 
         // Cross Platform Compatibility
         if (System.getProperty("os.name").contains("Windows")) {
-            /*
-            oldMember.setBounds (150, 533, 30, 30);
-            newMember.setBounds (265, 533, 30, 30);
-            isScholar.setBounds (620, 533, 30, 30);
-            notScholar.setBounds (738, 533, 30, 30); */
             oldMember.setBounds (160, 540, 30, 30);
             newMember.setBounds (273, 540, 30, 30);
             isScholar.setBounds (630, 540, 30, 30);
@@ -276,7 +272,7 @@ public class RegSystem extends JFrame {
             notScholar.setBounds (748, 543, 30, 30);
         }
 
-    }
+    }*/
 
     private void addSubmitButton () {
         // Submit Button
@@ -319,8 +315,11 @@ public class RegSystem extends JFrame {
     }
 
     private void setWindowSize () {
-        int width = 1000;
-        int height = 750;
+        // int width = 1000;
+        // int height = 750;
+
+        int width = 1920;
+        int height = 873;
 
         // Full Screen Settings
         /*
