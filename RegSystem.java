@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Arrays;
 import java.awt.Font;
@@ -50,12 +51,16 @@ public class RegSystem extends JFrame {
 
     Timestamp timestamp;
     SimpleDateFormat sdf;
+    String imageFilename;
+    String csvFilename;
+    int width;
+    int height;
 
     public RegSystem() {
-        setUpOldMemberDictionary();
-
-        setWindowSize();
-        setContentPane(new JLabel(new ImageIcon("background.png")));
+        csvFilename = JOptionPane.showInputDialog("CSV Filename:", "oldmembers.csv");
+        setUpOldMemberDictionary(csvFilename);
+        imageFilename = JOptionPane.showInputDialog("Image filename,width,height:", "background.png,1000,750");
+        setWindowSize(imageFilename);
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -75,9 +80,10 @@ public class RegSystem extends JFrame {
         }
 
         fields = new ArrayList<Field>();
-        addFields ();
-        addRadioButtons ();
-        addSubmitButton ();
+        addFields();
+        addRadioButtons();
+        addSubmitButton();
+        addCSVandBGChange();
 
         setLocationRelativeTo(null);
         setVisible(true);
@@ -107,33 +113,51 @@ public class RegSystem extends JFrame {
                 }
             });
 
+        // Disables the use of Enter Key to submit stuff
+        KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kfm.addKeyEventDispatcher( new KeyEventDispatcher()
+        {
+            public boolean dispatchKeyEvent(KeyEvent ke)
+            {
+                if( ke.getKeyCode() == KeyEvent.VK_ENTER )
+                {
+                    ke.consume();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         System.out.println ("Set-up completed!");
     }
 
-    private void setUpOldMemberDictionary() {
+    private void setUpOldMemberDictionary(String s) {
         oldMembers = new HashMap<String, String[]>();
         BufferedReader br = null;
 
 		try {
 			String currentLine;
-			br = new BufferedReader(new FileReader("oldmembers.csv"));
+			br = new BufferedReader(new FileReader(s));
 
 			while ((currentLine = br.readLine()) != null) {
 				String[] rawData = currentLine.split(",");
                 String[] data = Arrays.copyOfRange(rawData, 1, rawData.length);
                 oldMembers.put(rawData[0], data);
 			}
-
+            System.out.println ("Successfully imported old members!");
+		} catch (FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(new JFrame(), "Cannot locate file", "File Not Found Error", JOptionPane.ERROR_MESSAGE);
+            csvFilename = JOptionPane.showInputDialog("CSV Filename:", "oldmembers.csv");
+            setUpOldMemberDictionary(csvFilename);
 		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
+            e.printStackTrace();
+        } finally {
 			try {
 				if (br != null)br.close();
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			}
 		}
-        System.out.println ("Successfully imported old members!");
     }
 
     private void addFields () {
@@ -219,7 +243,7 @@ public class RegSystem extends JFrame {
                     firstName.setText(data[1]);
                     middleInitial.setText(data[2].substring(0,1));
                     nickname.setText(data[3]);
-                    year.setText(String.valueOf(Integer.parseInt(data[4]) + 1));
+                    year.setText(String.valueOf(Integer.parseInt(data[4]) + 1)); //if old member database is not updated to current year
                     course.setText(data[5]);
                     birthMonth.setText(birthday[0]);
                     birthDay.setText(birthday[1]);
@@ -318,24 +342,16 @@ public class RegSystem extends JFrame {
         getRootPane().setDefaultButton(submitButton);
     }
 
-    private void setWindowSize () {
-        int width = 1000;
-        int height = 750;
+    private void setWindowSize(String s) {
+        String[] filenameSplit = s.split(",");
+        width = Integer.parseInt(filenameSplit[1]);
+        height = Integer.parseInt(filenameSplit[2]);
 
-        // Full Screen Settings
-        /*
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setSize(screenSize.width, screenSize.height);
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setUndecorated(true);
-        */
-        //setSize (new Dimension (1000, 750));
         setMinimumSize(new Dimension(width, height));
         setPreferredSize(new Dimension(width, height));
-        setMaximumSize(new Dimension(width, height));
-
-        setVisible(true);
-        setLayout (null);
+        setMaximumSize(new Dimension(width, height));    
+        setContentPane(new JLabel(new ImageIcon(filenameSplit[0])));
+        setLayout(null);
     }
 
     // 0: Success
@@ -376,6 +392,28 @@ public class RegSystem extends JFrame {
             return incorrect_fields;
 
         return "Success";
+    }
+
+    private void addCSVandBGChange()
+    {
+        addMouseListener(new MouseListener()
+        {
+            public void mousePressed(MouseEvent me)
+            {
+                int meX = me.getX();
+                int meY = me.getY();
+
+                if( meY>=height-25 && meY<=height && meX <= 25 && meX>=0 )
+                {
+                    dispose();
+                    RegSystem a = new RegSystem();
+                }
+            }
+            public void mouseReleased(MouseEvent me){}
+            public void mouseClicked(MouseEvent me){}
+            public void mouseEntered(MouseEvent me){}
+            public void mouseExited(MouseEvent me){}
+        });
     }
 
     public static boolean isNumeric(String str)
