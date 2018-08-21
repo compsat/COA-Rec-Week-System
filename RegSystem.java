@@ -81,7 +81,7 @@ public class RegSystem extends JFrame {
 
         studentDetails = new JLabel();
         studentDetails.setFont(new Font("Arial", Font.PLAIN, 20));
-        studentDetails.setBounds(325, 375, 600, 35);
+        studentDetails.setBounds(425, 275, 600, 35);
 
         addFields ();
         //addRadioButtons ();
@@ -169,7 +169,7 @@ public class RegSystem extends JFrame {
             add (text_field);
         }
 
-        idNumber.setBounds(450, 285, 100, 35);
+        idNumber.setBounds(575, 215, 100, 35);
         // Cross-Platform Compatibility
         if (System.getProperty("os.name").contains("Windows")) {
             // year.setBounds (147, 285, 40, 35);
@@ -255,14 +255,14 @@ public class RegSystem extends JFrame {
         submitButton.setForeground(Color.decode("#333333"));
         submitButton.setBorderPainted(false);
         submitButton.setFocusPainted(false);
-        submitButton.setBounds (440, 500, 120, 56);
+        submitButton.setBounds (565, 350, 120, 56);
 
         getRootPane().setDefaultButton(submitButton);
     }
 
     private void setWindowSize () {
-        int width = 1000;
-        int height = 750;
+        int width = 1250;
+        int height = 569;
 
         // Full Screen Settings
         /*
