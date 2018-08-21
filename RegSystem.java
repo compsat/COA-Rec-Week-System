@@ -45,6 +45,8 @@ public class RegSystem extends JFrame {
     JRadioButton notScholar;
     ArrayList<Field> fields;
 
+    JLabel studentDetails;
+
     HashMap<String, String[]> oldMembers;
     SchoolSorter sorter;
 
@@ -76,6 +78,11 @@ public class RegSystem extends JFrame {
         }
 
         fields = new ArrayList<Field>();
+
+        studentDetails = new JLabel();
+        studentDetails.setFont(new Font("Arial", Font.PLAIN, 20));
+        studentDetails.setBounds(325, 375, 600, 35);
+
         addFields ();
         //addRadioButtons ();
         addSubmitButton ();
@@ -83,6 +90,9 @@ public class RegSystem extends JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        add(studentDetails);
+
         validate();
         repaint();
 
@@ -141,63 +151,37 @@ public class RegSystem extends JFrame {
         // Text Fields
         // Construct Components
         idNumber = new Field ("ID Number", 6, true);
-        // nickname = new Field (20);
         year = new Field ("Yr", 1, false);
         lastName = new Field ("Last Name", 20, false);
         course = new Field ("Course", 10, false);
-        // email = new Field (40);
         firstName = new Field ("First Name", 20, false);
         middleInitial = new Field ("MI", 1, false);
-        // mobileNumber = new Field ("eg. 09171234567", 11);
-        // birthMonth = new Field ("MM", 2);
-        // birthDay = new Field (" DD", 2);
-        // birthYear = new Field ("YYYY", 4);
 
         // Add Text Fields to ArrayList
         fields.add (idNumber);
-        // fields.add (nickname);
         fields.add (year);
         fields.add (lastName);
         fields.add (course);
-        // fields.add (email);
         fields.add (firstName);
         fields.add (middleInitial);
-        // fields.add (mobileNumber);
-        // fields.add (birthMonth);
-        // fields.add (birthDay);
-        // fields.add (birthYear);
 
         for (Field text_field : fields) {
             add (text_field);
         }
 
+        idNumber.setBounds(450, 285, 100, 35);
         // Cross-Platform Compatibility
         if (System.getProperty("os.name").contains("Windows")) {
-            idNumber.setBounds (147, 195, 100, 35);
-            // nickname.setBounds (147, 260, 155, 35);
-            year.setBounds (147, 285, 40, 35);
-            lastName.setBounds (147, 375, 290, 35);
-            course.setBounds (218, 285, 100, 35);
-            // email.setBounds (147, 440, 350, 35);
-            firstName.setBounds (471, 375, 290, 35);
-            middleInitial.setBounds (779, 375, 45, 35);
-            // mobileNumber.setBounds (616, 440, 200, 35);
-            // birthMonth.setBounds (616, 260, 50, 35);
-            // birthDay.setBounds (693, 260, 50, 35);
-            // birthYear.setBounds (768, 260, 59, 35);
+            // year.setBounds (147, 285, 40, 35);
+            // lastName.setBounds (147, 375, 290, 35);
+            // course.setBounds (218, 285, 100, 35);
+            // firstName.setBounds (471, 375, 290, 35);
         } else {
-            idNumber.setBounds (157, 205, 100, 35);
-            // nickname.setBounds (157, 270, 155, 35);
-            year.setBounds (384, 295, 40, 35);
-            lastName.setBounds (157, 385, 290, 35);
-            course.setBounds (458, 295, 100, 35);
-            // email.setBounds (157, 450, 350, 35);
-            firstName.setBounds (481, 385, 290, 35);
-            middleInitial.setBounds (789, 385, 45, 35);
-            // mobileNumber.setBounds (626, 450, 200, 35);
-            // birthMonth.setBounds (626, 270, 50, 35);
-            // birthDay.setBounds (703, 270, 50, 35);
-            // birthYear.setBounds (778, 270, 59, 35);
+            // year.setBounds (157, 295, 40, 35);
+            // lastName.setBounds (157, 385, 290, 35);
+            // course.setBounds (221, 295, 100, 35);
+            // firstName.setBounds (481, 385, 290, 35);
+            // middleInitial.setBounds (789, 385, 45, 35);
         }
 
         // Mouse pointer to ID Number
@@ -219,60 +203,22 @@ public class RegSystem extends JFrame {
                     lastName.setText(data[0]);
                     firstName.setText(data[1]);
                     middleInitial.setText(data[2].substring(0,1));
-                    // nickname.setText(data[3]);
                     year.setText(String.valueOf(Integer.parseInt(data[4]) + 1));
                     course.setText(data[5]);
-                    // birthMonth.setText(birthday[0]);
-                    // birthDay.setText(birthday[1]);
-                    // birthYear.setText(birthday[2]);
-                    // email.setText (data[7]);
-                    // mobileNumber.setText("0" + data[8]);
-                    // oldMember.setSelected (true);
-                    // notScholar.setSelected (true);
+                    studentDetails.setText(data[0]+", "+data[1]+" "+data[2].substring(0,1)+". - "
+                      +String.valueOf(Integer.parseInt(data[4]) + 1)+" "+data[5]);
+                }
+                else{
+                    lastName.setText("");
+                    firstName.setText("");
+                    middleInitial.setText("");
+                    year.setText("");
+                    course.setText("");
+                    studentDetails.setText("");
                 }
             }
         });
     }
-
-    /*private void addRadioButtons () {
-        // Membership Status
-        membershipStatus = new ButtonGroup();
-        oldMember = new JRadioButton();
-        newMember = new JRadioButton();
-        membershipStatus.add(oldMember);
-        membershipStatus.add(newMember);
-        add(oldMember);
-        add(newMember);
-        oldMember.setContentAreaFilled(false);
-        newMember.setContentAreaFilled(false);
-        newMember.setSelected (true);
-
-        // Scholarship Status
-        scholarshipStatus = new ButtonGroup();
-        isScholar = new JRadioButton();
-        notScholar = new JRadioButton();
-        scholarshipStatus.add(isScholar);
-        scholarshipStatus.add(notScholar);
-        add(isScholar);
-        add(notScholar);
-        isScholar.setContentAreaFilled(false);
-        notScholar.setContentAreaFilled(false);
-        notScholar.setSelected (true);
-
-        // Cross Platform Compatibility
-        if (System.getProperty("os.name").contains("Windows")) {
-            oldMember.setBounds (160, 540, 30, 30);
-            newMember.setBounds (273, 540, 30, 30);
-            isScholar.setBounds (630, 540, 30, 30);
-            notScholar.setBounds (743, 540, 30, 30);
-        } else {
-            oldMember.setBounds (160, 543, 30, 30);
-            newMember.setBounds (275, 543, 30, 30);
-            isScholar.setBounds (630, 543, 30, 30);
-            notScholar.setBounds (748, 543, 30, 30);
-        }
-
-    }*/
 
     private void addSubmitButton () {
         // Submit Button
@@ -309,17 +255,14 @@ public class RegSystem extends JFrame {
         submitButton.setForeground(Color.decode("#333333"));
         submitButton.setBorderPainted(false);
         submitButton.setFocusPainted(false);
-        submitButton.setBounds (703, 602, 120, 56);
+        submitButton.setBounds (440, 500, 120, 56);
 
         getRootPane().setDefaultButton(submitButton);
     }
 
     private void setWindowSize () {
-        // int width = 1000;
-        // int height = 750;
-
-        int width = 1920;
-        int height = 873;
+        int width = 1000;
+        int height = 750;
 
         // Full Screen Settings
         /*
@@ -446,12 +389,12 @@ public class RegSystem extends JFrame {
 
     public String returnDateToday()
     {
-    	Calendar cal = Calendar.getInstance();
-		int day = cal.get(Calendar.DAY_OF_MONTH);
-		int month = cal.get(Calendar.MONTH)+1;
-		int year = cal.get(Calendar.YEAR);
-		String dateToday = Integer.toString(month)+"_"+Integer.toString(day)+"_"+Integer.toString(year);
-		return dateToday;
+      Calendar cal = Calendar.getInstance();
+  		int day = cal.get(Calendar.DAY_OF_MONTH);
+  		int month = cal.get(Calendar.MONTH)+1;
+  		int year = cal.get(Calendar.YEAR);
+  		String dateToday = Integer.toString(month)+"_"+Integer.toString(day)+"_"+Integer.toString(year);
+  		return dateToday;
     }
 
     public static void main (String[] args) {
