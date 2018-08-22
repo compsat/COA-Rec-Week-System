@@ -59,7 +59,7 @@ public class RegSystem extends JFrame {
     int height;
 
     public RegSystem() {
-        csvFilename = JOptionPane.showInputDialog("CSV Filename:", "oldmembers.csv");
+        csvFilename = JOptionPane.showInputDialog("CSV Filename:", "");
         setUpOldMemberDictionary(csvFilename);
         imageFilename = JOptionPane.showInputDialog("Image filename,width,height:", "REGSCREEN.png,1250,569");
         setWindowSize(imageFilename);
@@ -143,30 +143,31 @@ public class RegSystem extends JFrame {
     private void setUpOldMemberDictionary(String s) {
         oldMembers = new HashMap<String, String[]>();
         BufferedReader br = null;
+        if(!s.equals("")) {
+            try {
+                String currentLine;
+                br = new BufferedReader(new FileReader(s));
 
-		try {
-			String currentLine;
-			br = new BufferedReader(new FileReader(s));
-
-			while ((currentLine = br.readLine()) != null) {
-				String[] rawData = currentLine.split(",");
-                String[] data = Arrays.copyOfRange(rawData, 1, rawData.length);
-                oldMembers.put(rawData[0], data);
-			}
-            System.out.println ("Successfully imported old members!");
-		} catch (FileNotFoundException ex) {
-            JOptionPane.showMessageDialog(new JFrame(), "Cannot locate file", "File Not Found Error", JOptionPane.ERROR_MESSAGE);
-            csvFilename = JOptionPane.showInputDialog("CSV Filename:", "oldmembers.csv");
-            setUpOldMemberDictionary(csvFilename);
-		} catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
+                while ((currentLine = br.readLine()) != null) {
+                    String[] rawData = currentLine.split(",");
+                    String[] data = Arrays.copyOfRange(rawData, 1, rawData.length);
+                    oldMembers.put(rawData[0], data);
+                }
+                System.out.println ("Successfully imported old members!");
+            } catch (FileNotFoundException ex) {
+                JOptionPane.showMessageDialog(new JFrame(), "Cannot locate file", "File Not Found Error", JOptionPane.ERROR_MESSAGE);
+                csvFilename = JOptionPane.showInputDialog("CSV Filename:", "oldmembers.csv");
+                setUpOldMemberDictionary(csvFilename);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (br != null)br.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     private void addFields () {
