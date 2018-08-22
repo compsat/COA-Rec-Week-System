@@ -87,8 +87,8 @@ public class RegSystem extends JFrame {
         studentDetails.setFont(new Font("Arial", Font.PLAIN, 20));
         studentDetails.setBounds(425, 275, 600, 35);
 
-        addFields ();
-        addSubmitButton ();
+        addFields();
+        addSubmitButton();
         addCSVandBGChange();
 
         setLocationRelativeTo(null);
@@ -181,11 +181,6 @@ public class RegSystem extends JFrame {
 
         // Add Text Fields to ArrayList
         fields.add (idNumber);
-        fields.add (year);
-        fields.add (lastName);
-        fields.add (course);
-        fields.add (firstName);
-        fields.add (middleInitial);
 
         for (Field text_field : fields) {
             add (text_field);
@@ -256,9 +251,9 @@ public class RegSystem extends JFrame {
         submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String result = submitButtonClicked();
+                System.out.println(result);
                 switch (result) {
                     case "Success":
-                        cleanData();
                         exportData();
                         JOptionPane.showMessageDialog(new JFrame(), "Thank you for registering!", "Success!", JOptionPane.PLAIN_MESSAGE);
                         idNumber.requestFocus();
@@ -309,27 +304,6 @@ public class RegSystem extends JFrame {
         // idNumber
         if (!isNumeric(idNumber.getText()) || idNumber.getText().replaceAll("\\s+","").length() != 6)
             incorrect_fields += "ID Number (eg.131356)\n";
-        // year
-        if (!isNumeric(year.getText()) || year.getText().replaceAll("\\s+","").length() != 1)
-            incorrect_fields += "Year Level (eg. 4)\n";
-        // email
-        if (!email.getText().contains("@") || !email.getText().contains("."))
-            incorrect_fields += "E-mail (eg. name@example.com)\n";
-        // mobileNumber
-        if (!isNumeric(mobileNumber.getText()) || mobileNumber.getText().replaceAll("\\s+","").length() != 11)
-            incorrect_fields += "Mobile Number (eg. 09171234567)\n";
-        // birthMonth
-        if (!isNumeric(birthMonth.getText()))
-            incorrect_fields += "Birth Month (eg. 12)\n";
-        // birthDay
-        if (!isNumeric(birthDay.getText()))
-            incorrect_fields += "Birth Day (eg. 04)\n";
-        // birthYear
-        if (!isNumeric(birthYear.getText()) || birthYear.getText().replaceAll("\\s+","").length() != 4)
-            incorrect_fields += "Birth Year (eg. 1994)\n";
-
-        if (!incorrect_fields.isEmpty())
-            return incorrect_fields;
 
         return "Success";
     }
@@ -364,8 +338,6 @@ public class RegSystem extends JFrame {
     public void exportData () {
         // Export data
         try {
-            String isOldMember = oldMember.isSelected() ? "YES" : "NO";
-            String scholarStatus = isScholar.isSelected() ? "YES" : "NO";
             String fileDate = "RecWeek-Attendance_"+ returnDateToday() + ".csv";
             sdf = new SimpleDateFormat("MM/dd/yyy HH:mm:ss");
             timestamp = new Timestamp(System.currentTimeMillis());
@@ -376,15 +348,9 @@ public class RegSystem extends JFrame {
                 lastName.getText() + "," +
                 firstName.getText() + "," +
                 middleInitial.getText().toUpperCase() + "," +
-                nickname.getText() + "," +
                 year.getText() + "," +
                 course.getText().toUpperCase() + "," +
                 sorter.getSchool(course.getText()) + "," +
-                birthMonth.getText() + "/" + birthDay.getText() + "/" + birthYear.getText() + "," +
-                mobileNumber.getText() + "," +
-                email.getText() + "," +
-                isOldMember + "," +
-                scholarStatus + "," + "," +
                 sdf.format(timestamp);
 
                 File file = new File(fileDate);
@@ -398,7 +364,7 @@ public class RegSystem extends JFrame {
           			FileWriter fw = new FileWriter(file.getAbsoluteFile(), true); // boolean: append mode //getAbsoluteFile()
           			BufferedWriter bw = new BufferedWriter(fw);
                 if (!fileExistedBefore) {
-                    bw.append("ID Number,Last Name,First Name,MI,Nickname,Year,Course,School,Birthday,Mobile,Email,Old Member?, Scholar?, ,Timestamp");
+                    bw.append("ID Number,Last Name,First Name,MI,Year,Course,School,Timestamp");
                 }
                 bw.newLine();
           			bw.append(data);
@@ -408,19 +374,10 @@ public class RegSystem extends JFrame {
             for (Field field : fields) {
                 field.setText("");
             }
-            newMember.setSelected (true);
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-    }
-
-    public void cleanData () {
-        if (birthMonth.getText().replaceAll("\\s+","").length() < 2)
-            birthMonth.setText("0" + birthMonth.getText().replaceAll("\\s+",""));
-
-        if (birthDay.getText().replaceAll("\\s+","").length() < 2)
-            birthDay.setText("0" + birthDay.getText().replaceAll("\\s+",""));
     }
 
     public String returnDateToday()
