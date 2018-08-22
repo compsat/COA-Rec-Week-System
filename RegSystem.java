@@ -85,7 +85,7 @@ public class RegSystem extends JFrame {
 
         studentDetails = new JLabel();
         studentDetails.setFont(new Font("Arial", Font.PLAIN, 20));
-        studentDetails.setBounds(425, 275, 600, 35);
+        studentDetails.setBounds(455, 275, 600, 35);
 
         addFields();
         addSubmitButton();
@@ -121,21 +121,6 @@ public class RegSystem extends JFrame {
                     }
                 }
             });
-
-        // Disables the use of Enter Key to submit stuff
-        KeyboardFocusManager kfm = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-        kfm.addKeyEventDispatcher( new KeyEventDispatcher()
-        {
-            public boolean dispatchKeyEvent(KeyEvent ke)
-            {
-                if( ke.getKeyCode() == KeyEvent.VK_ENTER )
-                {
-                    ke.consume();
-                    return true;
-                }
-                return false;
-            }
-        });
 
         System.out.println ("Set-up completed!");
     }
@@ -255,8 +240,11 @@ public class RegSystem extends JFrame {
                 System.out.println(result);
                 switch (result) {
                     case "Success":
+                        String prevID = idNumber.getText();
                         exportData();
-                        JOptionPane.showMessageDialog(new JFrame(), "Thank you for registering!", "Success!", JOptionPane.PLAIN_MESSAGE);
+                        String output = "Welcome to Rec Week! ID #: " + prevID;
+                        studentDetails.setText(output);
+                        // JOptionPane.showMessageDialog(new JFrame(), "Thank you for registering!", "Success!", JOptionPane.PLAIN_MESSAGE);
                         idNumber.requestFocus();
                         break;
                     case "Incomplete":
