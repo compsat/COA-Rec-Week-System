@@ -57,11 +57,12 @@ public class RegSystem extends JFrame {
     String csvFilename;
     int width;
     int height;
+    int yDiff;
 
     public RegSystem() {
         csvFilename = JOptionPane.showInputDialog("CSV Filename:", "");
         setUpOldMemberDictionary(csvFilename);
-        imageFilename = JOptionPane.showInputDialog("Image filename,width,height:", "REGSCREEN.png,1250,569");
+        imageFilename = JOptionPane.showInputDialog("Image filename", "REGSCREEN.png,1920,1080");
         setWindowSize(imageFilename);
 
         try {
@@ -85,7 +86,7 @@ public class RegSystem extends JFrame {
 
         studentDetails = new JLabel();
         studentDetails.setFont(new Font("Arial", Font.PLAIN, 20));
-        studentDetails.setBounds(455, 275, 600, 35);
+        studentDetails.setBounds((width/2)-180, (5*height/9)-17, 360, 35);
 
         addFields();
         addSubmitButton();
@@ -172,7 +173,7 @@ public class RegSystem extends JFrame {
             add (text_field);
         }
 
-        idNumber.setBounds(575, 215, 100, 35);
+        idNumber.setBounds((width/2)-50, (4*height/9)-17, 100, 35);
         // Cross-Platform Compatibility
         if (System.getProperty("os.name").contains("Windows")) {
             // year.setBounds (147, 285, 40, 35);
@@ -261,7 +262,7 @@ public class RegSystem extends JFrame {
         submitButton.setForeground(Color.decode("#333333"));
         submitButton.setBorderPainted(false);
         submitButton.setFocusPainted(false);
-        submitButton.setBounds (565, 350, 120, 56);
+        submitButton.setBounds ((width/2)-60, 350 + yDiff, 120, 56);
 
         getRootPane().setDefaultButton(submitButton);
     }
@@ -270,6 +271,7 @@ public class RegSystem extends JFrame {
         String[] filenameSplit = s.split(",");
         width = Integer.parseInt(filenameSplit[1]);
         height = Integer.parseInt(filenameSplit[2]);
+        yDiff = height - 569;
 
         setMinimumSize(new Dimension(width, height));
         setPreferredSize(new Dimension(width, height));
@@ -293,6 +295,9 @@ public class RegSystem extends JFrame {
         // idNumber
         if (!isNumeric(idNumber.getText()) || idNumber.getText().replaceAll("\\s+","").length() != 6)
             incorrect_fields += "ID Number (eg.131356)\n";
+
+        if (!incorrect_fields.isEmpty())
+            return incorrect_fields;
 
         return "Success";
     }
