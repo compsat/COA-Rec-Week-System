@@ -57,12 +57,12 @@ public class RegSystem extends JFrame {
     String csvFilename;
     int width;
     int height;
-    int yDiff;
+    String text;
 
     public RegSystem() {
-        csvFilename = JOptionPane.showInputDialog("CSV Filename:", "");
+        csvFilename = JOptionPane.showInputDialog("CSV Filename:", "database.csv");
         setUpOldMemberDictionary(csvFilename);
-        imageFilename = JOptionPane.showInputDialog("Image filename", "REGSCREEN.png,1920,1080");
+        imageFilename = JOptionPane.showInputDialog("Image filename", "REGSCREEN.png,1600,850");
         setWindowSize(imageFilename);
 
         try {
@@ -85,8 +85,8 @@ public class RegSystem extends JFrame {
         fields = new ArrayList<Field>();
 
         studentDetails = new JLabel();
-        studentDetails.setFont(new Font("Arial", Font.PLAIN, 20));
-        studentDetails.setBounds((width/2)-180, (5*height/9)-17, 360, 35);
+        studentDetails.setFont(new Font("Arial", Font.PLAIN, 60));
+        studentDetails.setBounds((width/2)-500, (5*height/9)-32, 1000, 64);
 
         addFields();
         addSubmitButton();
@@ -142,7 +142,7 @@ public class RegSystem extends JFrame {
                 System.out.println ("Successfully imported old members!");
             } catch (FileNotFoundException ex) {
                 JOptionPane.showMessageDialog(new JFrame(), "Cannot locate file", "File Not Found Error", JOptionPane.ERROR_MESSAGE);
-                csvFilename = JOptionPane.showInputDialog("CSV Filename:", "oldmembers.csv");
+                csvFilename = JOptionPane.showInputDialog("CSV Filename:", "database.csv");
                 setUpOldMemberDictionary(csvFilename);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -174,19 +174,6 @@ public class RegSystem extends JFrame {
         }
 
         idNumber.setBounds((width/2)-50, (4*height/9)-17, 100, 35);
-        // Cross-Platform Compatibility
-        if (System.getProperty("os.name").contains("Windows")) {
-            // year.setBounds (147, 285, 40, 35);
-            // lastName.setBounds (147, 375, 290, 35);
-            // course.setBounds (218, 285, 100, 35);
-            // firstName.setBounds (471, 375, 290, 35);
-        } else {
-            // year.setBounds (157, 295, 40, 35);
-            // lastName.setBounds (157, 385, 290, 35);
-            // course.setBounds (221, 295, 100, 35);
-            // firstName.setBounds (481, 385, 290, 35);
-            // middleInitial.setBounds (789, 385, 45, 35);
-        }
 
         // Mouse pointer to ID Number
         idNumber.getDocument().addDocumentListener(new DocumentListener() {
@@ -203,14 +190,11 @@ public class RegSystem extends JFrame {
             public void warn() {
                 if (idNumber.getText().length() == 6 && oldMembers.containsKey(idNumber.getText())){
                     String[] data = oldMembers.get(idNumber.getText());
-                    String[] birthday = data[6].split("/");
                     lastName.setText(data[0]);
                     firstName.setText(data[1]);
                     middleInitial.setText(data[2].substring(0,1));
-                    year.setText(String.valueOf(Integer.parseInt(data[4]) + 1));
-                    course.setText(data[5]);
-                    studentDetails.setText(data[0]+", "+data[1]+" "+data[2].substring(0,1)+". - "
-                      +String.valueOf(Integer.parseInt(data[4]) + 1)+" "+data[5]);
+                    year.setText(String.valueOf(Integer.parseInt(data[3])));
+                    course.setText(data[4]);
                 }
                 else{
                     lastName.setText("");
@@ -241,11 +225,15 @@ public class RegSystem extends JFrame {
                 System.out.println(result);
                 switch (result) {
                     case "Success":
-                        String prevID = idNumber.getText();
+                        String idNum = idNumber.getText();
+                        if(oldMembers.containsKey(idNum)) {
+                            String[] data = oldMembers.get(idNum);
+                            text = "Welcome to RecWeek! ID #: " + data[0]+", "+data[1]+" "+data[2].substring(0,1);
+                        }
+                        else 
+                            text = "Welcome to RecWeek! ID #: " + idNumber.getText();
                         exportData();
-                        String output = "Welcome to Rec Week! ID #: " + prevID;
-                        studentDetails.setText(output);
-                        // JOptionPane.showMessageDialog(new JFrame(), "Thank you for registering!", "Success!", JOptionPane.PLAIN_MESSAGE);
+                        studentDetails.setText(text);
                         idNumber.requestFocus();
                         break;
                     case "Incomplete":
@@ -262,7 +250,7 @@ public class RegSystem extends JFrame {
         submitButton.setForeground(Color.decode("#333333"));
         submitButton.setBorderPainted(false);
         submitButton.setFocusPainted(false);
-        submitButton.setBounds ((width/2)-60, 350 + yDiff, 120, 56);
+        submitButton.setBounds ((width/2)-60, (2*height/3)-28, 120, 56);
 
         getRootPane().setDefaultButton(submitButton);
     }
@@ -271,7 +259,6 @@ public class RegSystem extends JFrame {
         String[] filenameSplit = s.split(",");
         width = Integer.parseInt(filenameSplit[1]);
         height = Integer.parseInt(filenameSplit[2]);
-        yDiff = height - 569;
 
         setMinimumSize(new Dimension(width, height));
         setPreferredSize(new Dimension(width, height));
