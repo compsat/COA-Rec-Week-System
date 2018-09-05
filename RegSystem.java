@@ -46,6 +46,7 @@ public class RegSystem extends JFrame {
     JRadioButton notScholar;
     ArrayList<Field> fields;
 
+    JLabel welcomeText;
     JLabel studentDetails;
 
     HashMap<String, String[]> oldMembers;
@@ -58,6 +59,7 @@ public class RegSystem extends JFrame {
     int width;
     int height;
     String text;
+    String details;
 
     public RegSystem() {
         csvFilename = JOptionPane.showInputDialog("CSV Filename:", "database.csv");
@@ -84,9 +86,22 @@ public class RegSystem extends JFrame {
 
         fields = new ArrayList<Field>();
 
+        welcomeText = new JLabel();
         studentDetails = new JLabel();
-        studentDetails.setFont(new Font("Arial", Font.PLAIN, 60));
-        studentDetails.setBounds((width/2)-500, (5*height/9)-32, 1000, 64);
+
+        try {
+            InputStream is = RegSystem.class.getResourceAsStream("/PaytoneOne.ttf");
+            Font font = Font.createFont(Font.TRUETYPE_FONT, is).deriveFont(60f);
+            welcomeText.setFont(font);
+            studentDetails.setFont(font.deriveFont(30f));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        welcomeText.setForeground(Color.WHITE);
+        studentDetails.setForeground(Color.WHITE);
+        welcomeText.setBounds((width/2)-350, (5*height/9)-64, 700, 64);
+        studentDetails.setBounds((width/2)-300, (5*height/9), 600, 32);
 
         addFields();
         addSubmitButton();
@@ -96,6 +111,7 @@ public class RegSystem extends JFrame {
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        add(welcomeText);
         add(studentDetails);
 
         validate();
@@ -202,6 +218,7 @@ public class RegSystem extends JFrame {
                     middleInitial.setText("");
                     year.setText("");
                     course.setText("");
+                    welcomeText.setText("");
                     studentDetails.setText("");
                 }
             }
@@ -228,12 +245,16 @@ public class RegSystem extends JFrame {
                         String idNum = idNumber.getText();
                         if(oldMembers.containsKey(idNum)) {
                             String[] data = oldMembers.get(idNum);
-                            text = "Welcome to RecWeek! ID #: " + data[0]+", "+data[1]+" "+data[2].substring(0,1);
+                            text = "Welcome to RecWeek!";
+                            details = data[0] + ", " + data[1] + " " + data[2];
                         }
-                        else 
+                        else {
                             text = "Welcome to RecWeek! ID #: " + idNumber.getText();
+                            details = "";
+                        }
                         exportData();
-                        studentDetails.setText(text);
+                        welcomeText.setText(text);
+                        studentDetails.setText(details);
                         idNumber.requestFocus();
                         break;
                     case "Incomplete":
